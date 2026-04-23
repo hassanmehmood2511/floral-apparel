@@ -18,8 +18,15 @@ export async function GET(request: NextRequest) {
     const size = searchParams.get('size');
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '12', 10);
+    const includeInactive = searchParams.get('includeInactive') === 'true';
+    const adminKey = request.headers.get('x-admin-key');
+    const isAdminRequest = Boolean(adminKey && adminKey === process.env.ADMIN_KEY);
 
-    const query: any = { isActive: true };
+    if (includeInactive && !isAdminRequest) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const query: Record<string, unknown> = includeInactive ? {} : { isActive: true };
 
     if (category) {
       query.category = category;
