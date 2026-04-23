@@ -26,7 +26,7 @@ Floral Apparel is an e-commerce storefront and admin panel built with Next.js 14
    ```bash
    npm run dev
    ```
-6. Open [http://localhost:3000](http://localhost:3000).
+6. Open [http://localhost:3001](http://localhost:3001).
 
 ## MongoDB Atlas Setup
 

@@ -37,10 +37,9 @@ export default function ProductGrid({
     return (
       <div className="w-full flex flex-col items-center justify-center py-24 text-center px-4 bg-white border border-pistachio border-dashed rounded-2xl shadow-sm">
         <span className="text-6xl mb-6">🌸</span>
-        <h3 className="font-display text-2xl font-bold text-charcoal mb-2">No products found</h3>
+        <h3 className="font-display text-2xl font-bold text-charcoal mb-2">No products yet</h3>
         <p className="font-body text-charcoal/60 max-w-md">
-          We couldn't find any items matching your selected filters. Try adjusting your categories
-          or sizes!
+          We could not find any items matching your selected filters. Try adjusting category or size.
         </p>
       </div>
     );

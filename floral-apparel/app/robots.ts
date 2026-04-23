@@ -10,7 +10,7 @@ import type { MetadataRoute } from 'next';
  * @returns Next.js robots route output.
  */
 export default function robots(): MetadataRoute.Robots {
-  const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
 
   return {
     rules: [

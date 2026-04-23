@@ -10,12 +10,15 @@ import { formatPrice } from '@/lib/utils';
 
 export default function ProductCard({ product }: { product: any }) {
   // Use first image or a placeholder
-  const imageUrl = product.images?.[0] || 'https://via.placeholder.com/400x500?text=Floral+Apparel';
+  const imageUrl =
+    product.images?.[0] ||
+    'https://placehold.co/600x800/C8D8A8/2C2C2C?text=Floral+Apparel';
+  const productHref = `/products/${product.slug}`;
 
   return (
     <div className="group relative bg-white border border-pistachio rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full">
       <Link
-        href={`/product/${product.slug}`}
+        href={productHref}
         className="block relative aspect-[4/5] w-full overflow-hidden bg-cream"
       >
         <Image
@@ -43,7 +46,7 @@ export default function ProductCard({ product }: { product: any }) {
 
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2 gap-2">
-          <Link href={`/product/${product.slug}`}>
+          <Link href={productHref}>
             <h3 className="font-display text-lg font-bold text-charcoal line-clamp-1 hover:text-blush transition-colors">
               {product.name}
             </h3>
@@ -58,6 +61,11 @@ export default function ProductCard({ product }: { product: any }) {
         </p>
 
         <div className="flex flex-wrap gap-1.5 mt-auto">
+          {product.category && (
+            <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-cream text-charcoal uppercase tracking-wider border border-pistachio">
+              {product.category}
+            </span>
+          )}
           {product.sizes?.map((size: string) => (
             <span
               key={size}

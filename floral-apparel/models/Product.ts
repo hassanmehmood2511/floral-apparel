@@ -70,11 +70,10 @@ const ProductSchema: Schema<IProduct> = new Schema(
 );
 
 // Auto-generate slug from name before validating the document
-ProductSchema.pre('validate', function (next) {
+ProductSchema.pre('validate', function () {
   if (this.name && (!this.slug || this.isModified('name'))) {
     this.slug = slugify(this.name);
   }
-  next();
 });
 
 // Prevent Mongoose from compiling the model multiple times during Next.js hot-reloading

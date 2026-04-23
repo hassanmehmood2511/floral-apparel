@@ -1,19 +1,13 @@
-/**
- * Purpose: Main homepage for the Floral Apparel store
- * Author: [Author Placeholder]
- * Date: [Date Placeholder]
- */
 import type { Metadata } from 'next';
-import HeroSection from '@/components/ui/HeroSection';
 import ProductFilters from '@/components/product/ProductFilters';
 import ProductGrid from '@/components/product/ProductGrid';
 import { fetchStorefrontProducts } from '@/lib/storefrontProducts';
 
 export const metadata: Metadata = {
-  title: 'Home',
+  title: 'Shop',
 };
 
-export default async function HomePage({
+export default async function ShopPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -26,21 +20,16 @@ export default async function HomePage({
   try {
     products = await fetchStorefrontProducts({ category, size });
   } catch (error) {
-    console.error('Failed to fetch products for homepage:', error);
+    console.error('Failed to fetch products for shop page:', error);
   }
 
   return (
-    <div className="w-full">
-      <HeroSection />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20" id="shop">
-        <ProductFilters />
-
-        {products.length === 0 && (
-          <p className="mb-6 text-center text-charcoal/70 font-body">No products yet.</p>
-        )}
-        <ProductGrid products={products} isLoading={false} />
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <ProductFilters />
+      {products.length === 0 && (
+        <p className="mb-6 text-center text-charcoal/70 font-body">No products yet.</p>
+      )}
+      <ProductGrid products={products} isLoading={false} />
     </div>
   );
 }

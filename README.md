@@ -25,7 +25,7 @@ E-commerce clothing brand website
    ```bash
    npm run dev
    ```
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3001](http://localhost:3001) in your browser.
 
 ## Environment Variables Reference
 

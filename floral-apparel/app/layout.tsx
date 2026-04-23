@@ -8,7 +8,7 @@ import { Playfair_Display, DM_Sans } from 'next/font/google';
 import { AppToaster } from '@/components/ui/AppToaster';
 import './globals.css';
 
-const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],

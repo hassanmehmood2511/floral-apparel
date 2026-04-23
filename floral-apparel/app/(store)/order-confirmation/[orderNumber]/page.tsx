@@ -9,7 +9,7 @@ import { notFound } from 'next/navigation';
 import { formatPrice } from '@/lib/utils';
 import { Metadata } from 'next';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
 
 async function getOrder(orderNumber: string) {
   try {

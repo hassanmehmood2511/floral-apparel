@@ -16,15 +16,11 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const size = searchParams.get('size');
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '12', 10);
+    const pageParam = searchParams.get('page');
+    const limitParam = searchParams.get('limit');
+    const page = parseInt(pageParam || '1', 10);
+    const limit = parseInt(limitParam || '12', 10);
     const includeInactive = searchParams.get('includeInactive') === 'true';
-    const adminKey = request.headers.get('x-admin-key');
-    const isAdminRequest = Boolean(adminKey && adminKey === process.env.ADMIN_KEY);
-
-    if (includeInactive && !isAdminRequest) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const query: Record<string, unknown> = includeInactive ? {} : { isActive: true };
 
@@ -36,24 +32,28 @@ export async function GET(request: NextRequest) {
       query.sizes = size;
     }
 
-    const skip = (page - 1) * limit;
+    const hasPagination = Boolean(pageParam || limitParam);
+    const total = await Product.countDocuments(query);
+    const findQuery = Product.find(query).sort({ createdAt: -1 });
 
-    const [products, total] = await Promise.all([
-      Product.find(query).skip(skip).limit(limit).sort({ createdAt: -1 }).lean(),
-      Product.countDocuments(query),
-    ]);
+    if (hasPagination) {
+      const skip = (page - 1) * limit;
+      findQuery.skip(skip).limit(limit);
+    }
 
-    const totalPages = Math.ceil(total / limit);
+    const products = await findQuery.lean();
+    const totalPages = hasPagination ? Math.ceil(total / limit) : 1;
 
     return NextResponse.json({
       products,
       totalPages,
-      currentPage: page,
+      currentPage: hasPagination ? page : 1,
       total,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error fetching products:', error);
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch products';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 

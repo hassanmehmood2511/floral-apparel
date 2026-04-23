@@ -13,7 +13,7 @@ import { formatPrice } from '@/lib/utils';
 import type { Metadata } from 'next';
 
 // Fallback to localhost if NEXT_PUBLIC_SITE_URL is not set
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
 
 async function getProduct(slug: string) {
   try {

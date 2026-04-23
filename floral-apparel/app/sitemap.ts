@@ -15,7 +15,7 @@ type SitemapProduct = {
  * @returns Next.js sitemap route output.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001';
   const productEndpoint = `${baseSiteUrl}/api/products?limit=500`;
 
   let products: SitemapProduct[] = [];
