@@ -10,7 +10,7 @@ import ProductActions from '@/components/product/ProductActions';
 import ProductAccordion from '@/components/ui/Accordion';
 import ProductGrid from '@/components/product/ProductGrid';
 import { formatPrice } from '@/lib/utils';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 // Fallback to localhost if NEXT_PUBLIC_SITE_URL is not set
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -46,17 +46,54 @@ async function getRelatedProducts(category: string, currentSlug: string) {
   }
 }
 
+/**
+ * Builds schema.org product structured data for SEO.
+ * @param product Product details from API response.
+ * @returns JSON-LD product schema object.
+ */
+function buildProductStructuredData(product: any): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: product.images || [],
+    category: product.category,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'PKR',
+      price: String(product.price),
+      availability:
+        product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      url: `${baseUrl}/products/${product.slug}`,
+    },
+  };
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
   const product = await getProduct(params.slug);
-  if (!product) return { title: 'Product Not Found | Floral Apparel' };
+  if (!product) return { title: 'Product Not Found' };
 
   return {
-    title: `${product.name} | Floral Apparel`,
+    title: product.name,
     description: product.description,
+    openGraph: {
+      type: 'website',
+      title: product.name,
+      description: product.description,
+      images: [product.images?.[0] || '/images/og-placeholder.jpg'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description,
+      images: [product.images?.[0] || '/images/og-placeholder.jpg'],
+    },
   };
 }
 
@@ -68,9 +105,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
   }
 
   const relatedProducts = await getRelatedProducts(product.category, product.slug);
+  const productStructuredData = buildProductStructuredData(product);
 
   return (
     <div className="w-full pt-10 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productStructuredData) }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <nav className="flex text-sm text-charcoal/50 mb-8 font-body">

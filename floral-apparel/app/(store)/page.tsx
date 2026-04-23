@@ -1,13 +1,17 @@
-import React from 'react';
-import HeroSection from '@/components/ui/HeroSection';
-import ProductFilters from '@/components/product/ProductFilters';
-import ProductGrid from '@/components/product/ProductGrid';
-
 /**
  * Purpose: Main homepage for the Floral Apparel store
  * Author: [Author Placeholder]
  * Date: [Date Placeholder]
  */
+import type { Metadata } from 'next';
+import HeroSection from '@/components/ui/HeroSection';
+import ProductFilters from '@/components/product/ProductFilters';
+import ProductGrid from '@/components/product/ProductGrid';
+
+export const metadata: Metadata = {
+  title: 'Home',
+};
+
 export default async function HomePage({
   searchParams,
 }: {
