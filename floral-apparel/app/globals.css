@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pistachio: #c8d8a8;
+  --pistachio-light: #e5eed6;
+  --pistachio-dark: #a8bc82;
+  --blush: #f2a7bb;
+  --blush-light: #fad4e0;
+  --blush-dark: #e07898;
+  --cream: #fdf8f2;
+  --charcoal: #2c2c2c;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /* Subtle floral pattern/dots in pistachio-light */
+  background-image: radial-gradient(var(--pistachio-light) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pistachio);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pistachio-dark);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
