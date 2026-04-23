@@ -3,8 +3,10 @@
  * Author: [Author Placeholder]
  * Date: [Date Placeholder]
  */
-import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { AdminActionToast } from '@/components/admin/AdminActionToast';
 import { PrintOrderButton } from '@/components/admin/PrintOrderButton';
 import {
   ADMIN_ORDER_STATUSES,
@@ -16,6 +18,9 @@ import {
 type AdminOrderDetailsPageProperties = {
   params: {
     orderNumber: string;
+  };
+  searchParams?: {
+    toast?: string;
   };
 };
 
@@ -49,6 +54,7 @@ async function updateOrderStatusAction(orderNumber: string, formData: FormData):
   await updateAdminOrderStatus(orderNumber, submittedStatus);
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderNumber}`);
+  redirect(`/admin/orders/${orderNumber}?toast=status_updated`);
 }
 
 /**
@@ -57,12 +63,16 @@ async function updateOrderStatusAction(orderNumber: string, formData: FormData):
  */
 export default async function AdminOrderDetailsPage({
   params,
+  searchParams,
 }: AdminOrderDetailsPageProperties) {
   try {
     const orderRecord = await fetchAdminOrderByNumber(params.orderNumber);
+    const toastMessage =
+      searchParams?.toast === 'status_updated' ? 'Order status updated successfully.' : undefined;
 
     return (
       <section className="space-y-6 print:bg-white">
+        <AdminActionToast message={toastMessage} />
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold text-charcoal">Order {orderRecord.orderNumber}</h1>
@@ -129,9 +139,12 @@ export default async function AdminOrderDetailsPage({
             {orderRecord.paymentMethod === 'bank_transfer' && orderRecord.paymentProof && (
               <div className="mt-3">
                 <p className="mb-2 text-sm font-medium text-charcoal">Payment Proof</p>
-                <img
+                <Image
                   src={orderRecord.paymentProof}
                   alt={`Payment proof for ${orderRecord.orderNumber}`}
+                  width={640}
+                  height={480}
+                  loading="lazy"
                   className="max-h-72 rounded-md border border-black/10 object-contain"
                 />
               </div>

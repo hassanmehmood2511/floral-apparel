@@ -21,6 +21,7 @@ export default function CartItem({ item }: { item: CartItemType }) {
           src={item.image || 'https://via.placeholder.com/150'}
           alt={item.name}
           fill
+          loading="lazy"
           className="object-cover"
         />
       </div>

@@ -7,6 +7,7 @@
  */
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { useCartContext } from '@/lib/CartContext';
 import { cn } from '@/lib/utils';
 
@@ -77,6 +78,7 @@ export default function CheckoutForm() {
     const validationError = validateForm();
     if (validationError) {
       setError(validationError);
+      toast.error(validationError);
       return;
     }
 
@@ -109,9 +111,12 @@ export default function CheckoutForm() {
       }
 
       clearCart();
+      toast.success('Order placed successfully.');
       router.push(`/order-confirmation/${data.orderNumber}`);
     } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.');
+      const errorMessage = err.message || 'Something went wrong. Please try again.';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

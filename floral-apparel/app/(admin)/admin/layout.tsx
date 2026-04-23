@@ -5,6 +5,7 @@
  */
 import type { ReactNode } from 'react';
 import { AdminRouteShell } from '@/components/admin/AdminRouteShell';
+import { FadeIn } from '@/components/ui/FadeIn';
 
 type AdminLayoutProperties = {
   children: ReactNode;
@@ -18,7 +19,9 @@ type AdminLayoutProperties = {
 export function AdminLayout({ children }: AdminLayoutProperties) {
   return (
     <div className="min-h-screen bg-cream">
-      <AdminRouteShell>{children}</AdminRouteShell>
+      <AdminRouteShell>
+        <FadeIn>{children}</FadeIn>
+      </AdminRouteShell>
     </div>
   );
 }

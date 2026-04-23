@@ -4,8 +4,17 @@
  * Date: [Date Placeholder]
  */
 import Link from 'next/link';
+import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { AdminActionToast } from '@/components/admin/AdminActionToast';
 import { fetchAdminProducts, getAdminHeaders, getInternalRequestOrigin } from '@/lib/adminProducts';
+
+type AdminProductsPageProperties = {
+  searchParams?: {
+    toast?: string;
+  };
+};
 
 /**
  * Toggles active status for a selected product.
@@ -28,16 +37,24 @@ async function toggleProductStatusAction(formData: FormData): Promise<void> {
   });
 
   revalidatePath('/admin/products');
+  redirect('/admin/products?toast=toggled');
 }
 
 /**
  * Renders the admin product management table.
  */
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({ searchParams }: AdminProductsPageProperties) {
   const products = await fetchAdminProducts();
+  const toastMessages: Record<string, string> = {
+    created: 'Product created successfully.',
+    updated: 'Product updated successfully.',
+    toggled: 'Product status updated.',
+  };
+  const toastMessage = searchParams?.toast ? toastMessages[searchParams.toast] : undefined;
 
   return (
     <section className="space-y-5">
+      <AdminActionToast message={toastMessage} />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-charcoal">Products</h1>
         <Link href="/admin/products/new" className="rounded-md bg-charcoal px-4 py-2 text-sm font-medium text-white transition hover:bg-black">
@@ -61,7 +78,14 @@ export default async function AdminProductsPage() {
             {products.map((product) => (
               <tr key={product._id} className="text-sm text-charcoal">
                 <td className="px-4 py-3">
-                  <img src={product.images[0]} alt={product.name} className="h-12 w-12 rounded-md object-cover" />
+                  <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    className="h-12 w-12 rounded-md object-cover"
+                  />
                 </td>
                 <td className="px-4 py-3 font-medium">{product.name}</td>
                 <td className="px-4 py-3 capitalize">{product.category}</td>

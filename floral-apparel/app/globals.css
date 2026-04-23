@@ -55,3 +55,30 @@ body {
     display: none;
   }
 }
+
+@keyframes fadeInPage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes flowerFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInPage 220ms ease-in-out;
+}
+
+.animate-flower-float {
+  animation: flowerFloat 2.6s ease-in-out infinite;
+}

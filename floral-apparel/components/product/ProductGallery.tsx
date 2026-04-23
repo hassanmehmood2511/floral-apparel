@@ -42,6 +42,7 @@ export default function ProductGallery({ images, name }: { images: string[]; nam
                 src={img}
                 alt={`${name} thumbnail ${idx + 1}`}
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="80px"
               />

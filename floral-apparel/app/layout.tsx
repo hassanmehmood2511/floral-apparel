@@ -5,6 +5,7 @@
  */
 import type { Metadata } from 'next';
 import { Playfair_Display, DM_Sans } from 'next/font/google';
+import { AppToaster } from '@/components/ui/AppToaster';
 import './globals.css';
 
 const baseSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -62,6 +63,7 @@ export default function RootLayout({
         className={`${dmSans.variable} ${playfairDisplay.variable} font-body bg-cream text-charcoal antialiased min-h-screen flex flex-col`}
       >
         {children}
+        <AppToaster />
       </body>
     </html>
   );

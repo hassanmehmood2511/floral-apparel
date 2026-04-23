@@ -6,6 +6,7 @@
  * Date: [Date Placeholder]
  */
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useCartContext } from '@/lib/CartContext';
 import { cn } from '@/lib/utils';
 
@@ -38,7 +39,10 @@ export default function ProductActions({ product }: ProductActionsProps) {
   };
 
   const handleAddToCart = () => {
-    if (!selectedSize || !inStock) return;
+    if (!selectedSize || !inStock) {
+      toast.error('This item is currently unavailable.');
+      return;
+    }
 
     addItem({
       productId: product._id,
@@ -50,6 +54,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
     });
 
     setIsAdded(true);
+    toast.success('Added to cart.');
     setTimeout(() => setIsAdded(false), 2000);
   };
 

@@ -40,7 +40,7 @@ async function updateProductAction(productId: string, formData: FormData): Promi
   }
 
   revalidatePath('/admin/products');
-  redirect('/admin/products');
+  redirect('/admin/products?toast=updated');
 }
 
 /**

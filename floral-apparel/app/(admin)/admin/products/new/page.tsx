@@ -28,7 +28,7 @@ async function createProductAction(formData: FormData): Promise<void> {
   }
 
   revalidatePath('/admin/products');
-  redirect('/admin/products');
+  redirect('/admin/products?toast=created');
 }
 
 /**
